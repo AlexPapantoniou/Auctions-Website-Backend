@@ -3,6 +3,8 @@ package gr.uoa.tedi.backend.controller;
 import gr.uoa.tedi.backend.model.User;
 import gr.uoa.tedi.backend.service.UserService;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,10 +30,10 @@ public class UserController {
         return userService.registerUser(user);
     }
 
-    // @PostMapping("/login")
-    // public User login(@RequestBody User loginRequest) {
-    // return userService.login(loginRequest.getUsername(),
-    // loginRequest.getPassword())
-    // .orElseThrow(() -> new RuntimeException("Invalid credentials"));
-    // }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User loginRequest) {
+        return userService.login(loginRequest.getUsername(), loginRequest.getPassword())
+                .<ResponseEntity<?>>map(user -> ResponseEntity.ok(user))
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials"));
+    }
 }
