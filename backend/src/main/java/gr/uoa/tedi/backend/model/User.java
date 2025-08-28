@@ -118,7 +118,11 @@ public class User {
         this.phonenumber = phonenumber;
     }
 
+<<<<<<< HEAD
     public String getAFM() {
+=======
+    public String getA() {
+>>>>>>> a096e545d63c019784efb1958aa4e099cc5534cf
         return afm;
     }
 
