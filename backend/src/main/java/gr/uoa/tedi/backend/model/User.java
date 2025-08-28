@@ -35,8 +35,11 @@ public class User {
     @Column(name = "phonenumber")
     private String phonenumber;
 
-    @Column(name = "AFM")
-    private String AFM;
+    @Column(name = "afm")
+    private String afm;
+
+    protected User() {
+    }
 
     public User(String user_name, String pass_word, String first_name, String last_name, String city,
             String address, String email, String phone_number, String AFM) {
@@ -48,7 +51,7 @@ public class User {
         this.address = address;
         this.email = email;
         this.phonenumber = phone_number;
-        this.AFM = AFM;
+        this.afm = AFM;
     }
 
     public String getUsername() {
@@ -115,12 +118,12 @@ public class User {
         this.phonenumber = phonenumber;
     }
 
-    public String getAFM() {
-        return AFM;
+    public String getA() {
+        return afm;
     }
 
     public void setAFM(String AFM) {
-        this.AFM = AFM;
+        this.afm = AFM;
     }
 
 }

@@ -22,8 +22,13 @@ public class UserService {
     }
 
     public User registerUser(User user) {
-        // TODO: hash password
-        return userRepository.save(user);
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            System.err.println("Error saving user: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // rethrow so you see full stacktrace in console
+        }
     }
 
     public Optional<User> login(String username, String password) {
