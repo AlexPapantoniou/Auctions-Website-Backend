@@ -35,4 +35,16 @@ public class UserService {
         return userRepository.findByUsername(username)
                 .filter(u -> u.getPassword().equals(password)); // Replace with hash check
     }
+
+    public User acceptUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setAccepted(true);
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
 }

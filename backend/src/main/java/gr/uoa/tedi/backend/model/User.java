@@ -2,7 +2,8 @@ package gr.uoa.tedi.backend.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -11,6 +12,10 @@ import jakarta.persistence.Table;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userid")
+    private long userid;
+
     @Column(name = "username")
     private String username;
 
@@ -38,7 +43,10 @@ public class User {
     @Column(name = "afm")
     private String afm;
 
-    protected User() {
+    @Column(nullable = false)
+    private boolean accepted = false;
+
+    public User() {
     }
 
     public User(String user_name, String pass_word, String first_name, String last_name, String city,
@@ -52,6 +60,7 @@ public class User {
         this.email = email;
         this.phonenumber = phone_number;
         this.afm = AFM;
+        this.accepted = false;
     }
 
     public String getUsername() {
@@ -118,16 +127,20 @@ public class User {
         this.phonenumber = phonenumber;
     }
 
-<<<<<<< HEAD
     public String getAFM() {
-=======
-    public String getA() {
->>>>>>> a096e545d63c019784efb1958aa4e099cc5534cf
         return afm;
     }
 
     public void setAFM(String AFM) {
         this.afm = AFM;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 
 }

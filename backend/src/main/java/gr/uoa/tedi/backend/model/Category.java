@@ -31,7 +31,6 @@ public class Category {
         this.name = name;
     }
 
-    // getters and setters
     public Long getId() {
         return id;
     }
