@@ -21,19 +21,38 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<User> getAllExcludingAdmin() {
+        return userRepository.findAllExcludingAdmin();
+    }
+
     public User registerUser(User user) {
         try {
+            user.setAccepted((false));
             return userRepository.save(user);
         } catch (Exception e) {
             System.err.println("Error saving user: " + e.getMessage());
             e.printStackTrace();
-            throw e; // rethrow so you see full stacktrace in console
+            throw e;
         }
     }
 
-    public Optional<User> login(String username, String password) {
-        return userRepository.findByUsername(username)
-                .filter(u -> u.getPassword().equals(password)); // Replace with hash check
+    public User login(String username, String password) {
+        Optional<User> otpUser = userRepository.findByUsername(username);
+        if (otpUser.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        User user = otpUser.get();
+
+        if (!user.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        if (!user.isAccepted()) {
+            throw new RuntimeException("User not yet accepted by the admin");
+        }
+
+        return user;
     }
 
     public User acceptUser(Long id) {

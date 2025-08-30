@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -16,37 +17,47 @@ public class Bid {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "bidid")
+    private long bidid;
 
     @ManyToOne
+    @JoinColumn(name = "auctionid", nullable = false)
+    private Auction auction;
+
+    @ManyToOne
+    @JoinColumn(name = "userid", nullable = false)
     private User bidder;
 
-    @ManyToOne
-    private Item item;
-
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private double amount;
 
-    @Column(name = "time")
+    @Column(name = "time", nullable = false)
     private LocalDateTime time;
 
     public Bid() {
     }
 
-    public Bid(User bidder, Item item, double amount, LocalDateTime time) {
+    public Bid(Auction auction, User bidder, double amount, LocalDateTime time) {
+        this.auction = auction;
         this.bidder = bidder;
-        this.item = item;
         this.amount = amount;
         this.time = time;
     }
 
-    public long getId() {
-        return id;
+    public long getBidId() {
+        return bidid;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setBidId(Long bidid) {
+        this.bidid = bidid;
+    }
+
+    public Auction getAuction() {
+        return auction;
+    }
+
+    public void setAuction(Auction auction) {
+        this.auction = auction;
     }
 
     public User getBidder() {
@@ -55,14 +66,6 @@ public class Bid {
 
     public void setBidder(User bidder) {
         this.bidder = bidder;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
     }
 
     public double getAmount() {

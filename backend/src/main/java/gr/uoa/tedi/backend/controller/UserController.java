@@ -32,8 +32,15 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
-        return userService.login(loginRequest.getUsername(), loginRequest.getPassword())
-                .<ResponseEntity<?>>map(user -> ResponseEntity.ok(user))
-                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials"));
+        try {
+            User user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException ex) {
+            if (ex.getMessage().contains("not yet accepted")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+            }
+        }
     }
 }

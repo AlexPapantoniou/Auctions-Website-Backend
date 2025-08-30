@@ -21,20 +21,20 @@ public class AdminController {
 
     // ✅ Get all users
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllExcludingAdmin());
     }
 
     // ✅ Accept user (set accepted = true)
-    @PutMapping("/users/{id}/accept")
-    public ResponseEntity<User> acceptUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.acceptUser(id));
+    @PutMapping("/users/{userid}/accept")
+    public ResponseEntity<User> acceptUser(@PathVariable Long userid) {
+        return ResponseEntity.ok(userService.acceptUser(userid));
     }
 
     // ✅ Reject user (delete)
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/users/{userid}/delete")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userid) {
+        userService.deleteUser(userid);
         return ResponseEntity.noContent().build();
     }
 }
