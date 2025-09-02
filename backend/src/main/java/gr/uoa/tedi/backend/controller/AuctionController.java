@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/auctions")
@@ -52,6 +54,11 @@ public class AuctionController {
     public ResponseEntity<Auction> getAuctionById(@PathVariable Long id) {
         Auction auction = auctionService.getAuctionById(id);
         return auction != null ? ResponseEntity.ok(auction) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/addauction")
+    public Auction addAuction(@RequestBody Auction auction) {
+        return auctionService.registerAuction(auction);
     }
 
 }

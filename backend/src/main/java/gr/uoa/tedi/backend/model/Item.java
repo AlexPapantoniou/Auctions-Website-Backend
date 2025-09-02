@@ -35,9 +35,6 @@ public class Item {
     @JoinTable(name = "itemcategory", joinColumns = @JoinColumn(name = "itemid"), inverseJoinColumns = @JoinColumn(name = "categoryid"))
     private Set<Category> categories;
 
-    @Column(name = "buyprice")
-    private double buyprice;
-
     @Column(name = "location")
     private String location;
 
@@ -50,11 +47,10 @@ public class Item {
     protected Item() {
     }
 
-    public Item(String name, Set<Category> categories, double buyprice, String location, String country,
+    public Item(String name, Set<Category> categories, String location, String country,
             String description) {
         this.name = name;
         this.categories = categories;
-        this.buyprice = buyprice;
         this.location = location;
         this.country = country;
         this.description = description;
@@ -82,14 +78,6 @@ public class Item {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
-    }
-
-    public double getBuyprice() {
-        return buyprice;
-    }
-
-    public void setBuyprice(double buyprice) {
-        this.buyprice = buyprice;
     }
 
     public String getLocation() {

@@ -39,6 +39,9 @@ public class Auction {
     @Column(name = "currentbid")
     private Double currentBid = 0.0;
 
+    @Column(name = "buyprice")
+    private Double buyPrice;
+
     @Column(name = "numberofbids")
     private Integer numberOfBids = 0;
 
@@ -54,12 +57,13 @@ public class Auction {
     public Auction() {
     }
 
-    public Auction(User seller, Item item, Double firstBid, LocalDateTime startTime,
+    public Auction(User seller, Item item, Double firstBid, Double buyPrice, LocalDateTime startTime,
             LocalDateTime endTime) {
         this.seller = seller;
         this.item = item;
         this.firstBid = firstBid;
         this.currentBid = firstBid;
+        this.buyPrice = buyPrice;
         this.numberOfBids = 0;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -103,6 +107,14 @@ public class Auction {
 
     public void setCurrentBid(Double currentBid) {
         this.currentBid = currentBid;
+    }
+
+    public Double getbuyPrice() {
+        return buyPrice;
+    }
+
+    public void setbuyPrice(Double buyPrice) {
+        this.buyPrice = buyPrice;
     }
 
     public Integer getNumberOfBids() {

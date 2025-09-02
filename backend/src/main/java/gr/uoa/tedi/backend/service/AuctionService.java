@@ -31,4 +31,8 @@ public class AuctionService {
     public Auction getAuctionById(Long id) {
         return auctionRepository.findById(id).orElse(null);
     }
+
+    public Auction registerAuction(Auction auction) {
+        return auctionRepository.save(auction);
+    }
 }

@@ -21,19 +21,17 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public Optional<User> getUserById(Long userid) {
+        return userRepository.findById(userid);
+    }
+
     public List<User> getAllExcludingAdmin() {
         return userRepository.findAllExcludingAdmin();
     }
 
     public User registerUser(User user) {
-        try {
-            user.setAccepted((false));
-            return userRepository.save(user);
-        } catch (Exception e) {
-            System.err.println("Error saving user: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
+        user.setAccepted((false));
+        return userRepository.save(user);
     }
 
     public User login(String username, String password) {

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auctions")
@@ -23,6 +24,11 @@ public class UserController {
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @GetMapping("/users/{userid}")
+    public Optional<User> getUserById(@PathVariable Long userid) {
+        return userService.getUserById(userid);
     }
 
     @PostMapping("/signup")
