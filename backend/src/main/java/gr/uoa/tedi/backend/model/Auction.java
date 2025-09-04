@@ -29,7 +29,7 @@ public class Auction {
     @JoinColumn(name = "userid", nullable = false)
     private User seller;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "itemid", nullable = false)
     private Item item;
 

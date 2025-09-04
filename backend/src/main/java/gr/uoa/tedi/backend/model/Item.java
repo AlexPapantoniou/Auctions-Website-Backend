@@ -1,9 +1,11 @@
 package gr.uoa.tedi.backend.model;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,9 +33,9 @@ public class Item {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "itemcategory", joinColumns = @JoinColumn(name = "itemid"), inverseJoinColumns = @JoinColumn(name = "categoryid"))
-    private Set<Category> categories;
+    private List<Category> categories = new ArrayList<>();
 
     @Column(name = "location")
     private String location;
@@ -47,7 +49,7 @@ public class Item {
     protected Item() {
     }
 
-    public Item(String name, Set<Category> categories, String location, String country,
+    public Item(String name, List<Category> categories, String location, String country,
             String description) {
         this.name = name;
         this.categories = categories;
@@ -72,11 +74,11 @@ public class Item {
         this.name = name;
     }
 
-    public Set<Category> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<Category> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 

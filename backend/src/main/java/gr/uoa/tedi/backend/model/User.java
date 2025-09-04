@@ -31,8 +31,8 @@ public class User {
     @Column(name = "city")
     private String city;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "country")
+    private String country;
 
     @Column(name = "email")
     private String email;
@@ -43,24 +43,32 @@ public class User {
     @Column(name = "afm")
     private String afm;
 
-    @Column(nullable = false)
+    @Column(name = "accepted", nullable = false)
     private boolean accepted = false;
+
+    @Column(name = "bidder-rating")
+    private Integer bidderRating = 0;
+
+    @Column(name = "seller-rating")
+    private Integer sellerRating = 0;
 
     public User() {
     }
 
     public User(String user_name, String pass_word, String first_name, String last_name, String city,
-            String address, String email, String phone_number, String AFM) {
+            String country, String email, String phone_number, String AFM) {
         this.username = user_name;
         this.password = pass_word;
         this.firstname = first_name;
         this.lastname = last_name;
         this.city = city;
-        this.address = address;
+        this.country = country;
         this.email = email;
         this.phonenumber = phone_number;
         this.afm = AFM;
         this.accepted = false;
+        this.bidderRating = 0;
+        this.sellerRating = 0;
     }
 
     public Long getUserid() {
@@ -111,12 +119,12 @@ public class User {
         this.city = city;
     }
 
-    public String getAddress() {
-        return address;
+    public String getcountry() {
+        return country;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setcountry(String country) {
+        this.country = country;
     }
 
     public String getEmail() {
@@ -149,6 +157,22 @@ public class User {
 
     public void setAccepted(boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public Integer getBidderRating() {
+        return bidderRating;
+    }
+
+    public void setBidderRating(Integer bidderRating) {
+        this.bidderRating = bidderRating;
+    }
+
+    public Integer getSellerRating() {
+        return sellerRating;
+    }
+
+    public void setSellerRating(Integer sellerRating) {
+        this.sellerRating = sellerRating;
     }
 
 }

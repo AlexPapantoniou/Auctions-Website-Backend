@@ -24,7 +24,7 @@ public class Bid {
 
     @ManyToOne
     @JoinColumn(name = "auctionid", nullable = false)
-    @JsonIgnore
+    // @JsonIgnore
     private Auction auction;
 
     @ManyToOne
