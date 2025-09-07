@@ -30,7 +30,7 @@ public class Auction {
     private User seller;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "itemid", nullable = false)
+    @JoinColumn(name = "itemid", referencedColumnName = "itemid", nullable = false)
     private Item item;
 
     @Column(name = "firstbid")

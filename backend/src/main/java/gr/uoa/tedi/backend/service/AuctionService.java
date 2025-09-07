@@ -2,6 +2,7 @@ package gr.uoa.tedi.backend.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import gr.uoa.tedi.backend.model.Category;
 
@@ -38,8 +39,28 @@ public class AuctionService {
         return auctionRepository.findByCategory(category, PageRequest.of(page, size));
     }
 
+    public Page<Auction> getAuctionsBySeller(Long sellerid, int page, int size) {
+        return auctionRepository.findBySellerId(sellerid, PageRequest.of(page, size));
+    }
+
     public Auction getAuctionById(Long id) {
         return auctionRepository.findById(id).orElse(null);
+    }
+
+    public List<String> getAllLocations() {
+        return auctionRepository.findAllLocations();
+    }
+
+    public List<String> getAllCountries() {
+        return auctionRepository.findAllCountries();
+    }
+
+    public Page<Auction> getAuctionsByLocation(String location, int page, int size) {
+        return auctionRepository.findByLocation(location, PageRequest.of(page, size));
+    }
+
+    public Page<Auction> getAuctionsByCountry(String country, int page, int size) {
+        return auctionRepository.findByCountry(country, PageRequest.of(page, size));
     }
 
     public Auction registerAuction(Auction auction) {
@@ -53,5 +74,21 @@ public class AuctionService {
 
         auction.getItem().setCategories(itemCategories);
         return auctionRepository.save(auction);
+    }
+
+    public Optional<Auction> updateAuction(Long auctionId, Auction updatedAuction) {
+        return auctionRepository.findById(auctionId).map(existingAuction -> {
+            existingAuction.setbuyPrice(updatedAuction.getbuyPrice());
+            existingAuction.setEndTime(updatedAuction.getEndTime());
+            existingAuction.getItem().setDescription(updatedAuction.getItem().getDescription());
+            existingAuction.getItem().setLocation(updatedAuction.getItem().getLocation());
+            existingAuction.getItem().setCountry(updatedAuction.getItem().getCountry());
+
+            return auctionRepository.save(existingAuction);
+        });
+    }
+
+    public void deleteAuction(Long auctionid) {
+        auctionRepository.deleteById(auctionid);
     }
 }

@@ -20,7 +20,7 @@ public class BidService {
 
     public Page<Bid> getBidsByAuctionId(Long auctionId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("time").descending());
-        return bidRepository.findByAuction_AuctionId(auctionId, pageable);
+        return bidRepository.findByAuction_Auctionid(auctionId, pageable);
     }
 
     public Bid placeBid(Bid bid) {

@@ -1,5 +1,7 @@
 package gr.uoa.tedi.backend.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +21,22 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
     @Query("SELECT a FROM Auction a JOIN a.item.categories c WHERE c.name = :category")
     Page<Auction> findByCategory(@Param("category") String category, Pageable pageable);
+
+    @Query("SELECT a FROM Auction a WHERE a.seller.userid = :sellerid")
+    Page<Auction> findBySellerId(@Param("sellerid") Long sellerid, Pageable pageable);
+
+    @Query("SELECT DISTINCT a.item.location FROM Auction a")
+    List<String> findAllLocations();
+
+    @Query("SELECT DISTINCT a.item.country FROM Auction a")
+    List<String> findAllCountries();
+
+    @Query("SELECT a FROM Auction a WHERE a.item.location = :location")
+    Page<Auction> findByLocation(String location, Pageable pageable);
+
+    @Query("SELECT a FROM Auction a WHERE a.item.country = :country")
+    Page<Auction> findByCountry(String country, Pageable pageable);
+
+    void deleteById(Long id);
 
 }
