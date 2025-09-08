@@ -28,11 +28,17 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     @Query("SELECT DISTINCT a.item.location FROM Auction a")
     List<String> findAllLocations();
 
+    @Query("SELECT DISTINCT a.item.city FROM Auction a")
+    List<String> findAllCities();
+
     @Query("SELECT DISTINCT a.item.country FROM Auction a")
     List<String> findAllCountries();
 
     @Query("SELECT a FROM Auction a WHERE a.item.location = :location")
     Page<Auction> findByLocation(String location, Pageable pageable);
+
+    @Query("SELECT a FROM Auction a WHERE a.item.city = :city")
+    Page<Auction> findByCity(String city, Pageable pageable);
 
     @Query("SELECT a FROM Auction a WHERE a.item.country = :country")
     Page<Auction> findByCountry(String country, Pageable pageable);

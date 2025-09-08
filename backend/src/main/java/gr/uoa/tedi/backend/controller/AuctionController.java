@@ -75,6 +75,13 @@ public class AuctionController {
         return auctionService.getAllLocations();
     }
 
+    @GetMapping("/cities")
+    public List<String> getAllCities(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return auctionService.getAllCities();
+    }
+
     @GetMapping("/countries")
     public List<String> getAllCountries(
             @RequestParam(defaultValue = "0") int page,
@@ -88,6 +95,14 @@ public class AuctionController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         return auctionService.getAuctionsByLocation(location, page, size);
+    }
+
+    @GetMapping("items/city/{city}")
+    public Page<Auction> getAuctionsByCity(
+            @PathVariable String city,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return auctionService.getAuctionsByCity(city, page, size);
     }
 
     @GetMapping("items/country/{country}")

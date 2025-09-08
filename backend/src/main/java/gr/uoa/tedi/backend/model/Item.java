@@ -37,8 +37,14 @@ public class Item {
     @JoinTable(name = "itemcategory", joinColumns = @JoinColumn(name = "itemid"), inverseJoinColumns = @JoinColumn(name = "categoryid"))
     private List<Category> categories = new ArrayList<>();
 
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "location")
     private String location;
+
+    @Column(name = "city")
+    private String city;
 
     @Column(name = "country")
     private String country;
@@ -49,11 +55,13 @@ public class Item {
     protected Item() {
     }
 
-    public Item(String name, List<Category> categories, String location, String country,
+    public Item(String name, List<Category> categories, String address, String location, String city, String country,
             String description) {
         this.name = name;
         this.categories = categories;
+        this.address = address;
         this.location = location;
+        this.city = city;
         this.country = country;
         this.description = description;
     }
@@ -82,12 +90,28 @@ public class Item {
         this.categories = categories;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getLocation() {
         return location;
     }
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getCountry() {

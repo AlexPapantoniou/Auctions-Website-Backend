@@ -51,12 +51,20 @@ public class AuctionService {
         return auctionRepository.findAllLocations();
     }
 
+    public List<String> getAllCities() {
+        return auctionRepository.findAllCities();
+    }
+
     public List<String> getAllCountries() {
         return auctionRepository.findAllCountries();
     }
 
     public Page<Auction> getAuctionsByLocation(String location, int page, int size) {
         return auctionRepository.findByLocation(location, PageRequest.of(page, size));
+    }
+
+    public Page<Auction> getAuctionsByCity(String city, int page, int size) {
+        return auctionRepository.findByCity(city, PageRequest.of(page, size));
     }
 
     public Page<Auction> getAuctionsByCountry(String country, int page, int size) {
@@ -81,7 +89,7 @@ public class AuctionService {
             existingAuction.setbuyPrice(updatedAuction.getbuyPrice());
             existingAuction.setEndTime(updatedAuction.getEndTime());
             existingAuction.getItem().setDescription(updatedAuction.getItem().getDescription());
-            existingAuction.getItem().setLocation(updatedAuction.getItem().getLocation());
+            existingAuction.getItem().setCity(updatedAuction.getItem().getCity());
             existingAuction.getItem().setCountry(updatedAuction.getItem().getCountry());
 
             return auctionRepository.save(existingAuction);
