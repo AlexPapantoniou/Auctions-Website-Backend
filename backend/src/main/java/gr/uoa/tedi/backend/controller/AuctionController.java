@@ -30,7 +30,7 @@ public class AuctionController {
         this.auctionService = auctionService;
     }
 
-    @GetMapping
+    @GetMapping("/auctions")
     public Page<Auction> getAllAuctions(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -38,7 +38,7 @@ public class AuctionController {
         return auctionService.getAllAuctions(page, size);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/auctions/search")
     public Page<Auction> searchAuctions(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
@@ -46,7 +46,7 @@ public class AuctionController {
         return auctionService.searchAuctions(keyword, page, size);
     }
 
-    @GetMapping("/category")
+    @GetMapping("/auctions/category")
     public Page<Auction> searchAuctionsByCategory(
             @RequestParam String category,
             @RequestParam(defaultValue = "0") int page,
@@ -54,7 +54,7 @@ public class AuctionController {
         return auctionService.searchAuctionsByCategory(category, page, size);
     }
 
-    @GetMapping("seller/{sellerid}/auctions")
+    @GetMapping("/auctionsseller/{sellerid}/auctions")
     public Page<Auction> getAuctionsBySeller(
             @PathVariable Long sellerid,
             @RequestParam(defaultValue = "0") int page,
@@ -62,34 +62,28 @@ public class AuctionController {
         return auctionService.getAuctionsBySeller(sellerid, page, size);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/auctions/{id}")
     public ResponseEntity<Auction> getAuctionById(@PathVariable Long id) {
         Auction auction = auctionService.getAuctionById(id);
         return auction != null ? ResponseEntity.ok(auction) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/locations")
-    public List<String> getAllLocations(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+    @GetMapping("/auctions/locations")
+    public List<String> getAllLocations() {
         return auctionService.getAllLocations();
     }
 
-    @GetMapping("/cities")
-    public List<String> getAllCities(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+    @GetMapping("/auctions/cities")
+    public List<String> getAllCities() {
         return auctionService.getAllCities();
     }
 
-    @GetMapping("/countries")
-    public List<String> getAllCountries(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+    @GetMapping("/auctions/countries")
+    public List<String> getAllCountries() {
         return auctionService.getAllCountries();
     }
 
-    @GetMapping("items/location/{location}")
+    @GetMapping("/auctionsitems/location/{location}")
     public Page<Auction> getAuctionsByLocation(
             @PathVariable String location,
             @RequestParam(defaultValue = "0") int page,
@@ -97,7 +91,7 @@ public class AuctionController {
         return auctionService.getAuctionsByLocation(location, page, size);
     }
 
-    @GetMapping("items/city/{city}")
+    @GetMapping("/auctionsitems/city/{city}")
     public Page<Auction> getAuctionsByCity(
             @PathVariable String city,
             @RequestParam(defaultValue = "0") int page,
@@ -105,7 +99,7 @@ public class AuctionController {
         return auctionService.getAuctionsByCity(city, page, size);
     }
 
-    @GetMapping("items/country/{country}")
+    @GetMapping("/auctionsitems/country/{country}")
     public Page<Auction> getAuctionsByCountry(
             @PathVariable String country,
             @RequestParam(defaultValue = "0") int page,
@@ -113,12 +107,12 @@ public class AuctionController {
         return auctionService.getAuctionsByCountry(country, page, size);
     }
 
-    @PostMapping("/addauction")
+    @PostMapping("/auctions/addauction")
     public Auction addAuction(@RequestBody Auction auction) {
         return auctionService.registerAuction(auction);
     }
 
-    @PutMapping("/update/{auctionid}")
+    @PutMapping("/auctions/update/{auctionid}")
     public ResponseEntity<Auction> updateAuction(
             @PathVariable Long auctionid,
             @RequestBody Auction updatedAuction) {
@@ -127,7 +121,7 @@ public class AuctionController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/auctions/delete/{id}")
     public ResponseEntity<Void> deleteAuction(@PathVariable Long auctionid) {
         auctionService.deleteAuction(auctionid);
         return ResponseEntity.noContent().build();

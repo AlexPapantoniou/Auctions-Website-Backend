@@ -32,12 +32,12 @@ public class UserController {
         return userService.getUserById(userid);
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/users/signup")
     public User signup(@RequestBody User user) {
         return userService.registerUser(user);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public ResponseEntity<?> login(@RequestBody User loginRequest) {
         try {
             User user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());

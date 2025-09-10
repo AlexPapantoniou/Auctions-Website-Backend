@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/bids")
+@RequestMapping("/auctions")
 @CrossOrigin(origins = "http:localhost/4200")
 public class BidController {
 
@@ -36,7 +36,7 @@ public class BidController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/auction/{auctionid}")
+    @GetMapping("/bids/auction/{auctionid}")
     public Page<Bid> getBidsByAuctionId(
             @PathVariable Long auctionid,
             @RequestParam(defaultValue = "0") int page,
@@ -44,7 +44,7 @@ public class BidController {
         return bidService.getBidsByAuctionId(auctionid, page, size);
     }
 
-    @PostMapping("/place")
+    @PostMapping("/bids/place")
     public ResponseEntity<Bid> placeBid(@RequestBody Bid bid) {
         bid.setTime(LocalDateTime.now());
 

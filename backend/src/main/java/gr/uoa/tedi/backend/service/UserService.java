@@ -3,6 +3,7 @@ package gr.uoa.tedi.backend.service;
 import gr.uoa.tedi.backend.model.User;
 import gr.uoa.tedi.backend.repository.UserRepository;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +13,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getAllUsers() {
@@ -30,11 +33,12 @@ public class UserService {
     }
 
     public User registerUser(User user) {
-        user.setAccepted((false));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAccepted(false);
         return userRepository.save(user);
     }
 
-    public User login(String username, String password) {
+    public User login(String username, String rawPassword) {
         Optional<User> otpUser = userRepository.findByUsername(username);
         if (otpUser.isEmpty()) {
             throw new RuntimeException("User not found");
@@ -42,7 +46,7 @@ public class UserService {
 
         User user = otpUser.get();
 
-        if (!user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
 

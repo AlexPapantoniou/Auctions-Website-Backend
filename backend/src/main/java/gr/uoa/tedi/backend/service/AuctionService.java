@@ -72,6 +72,7 @@ public class AuctionService {
     }
 
     public Auction registerAuction(Auction auction) {
+        auction.setCurrentBid(auction.getFirstBid());
         List<Category> itemCategories = new ArrayList<>();
         for (Category c : auction.getItem().getCategories()) {
             Category existing = categoryRepository.findByName(c.getName())

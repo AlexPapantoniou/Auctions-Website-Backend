@@ -37,7 +37,7 @@ public class Auction {
     private Double firstBid;
 
     @Column(name = "currentbid")
-    private Double currentBid = 0.0;
+    private Double currentBid;
 
     @Column(name = "buyprice")
     private Double buyPrice;

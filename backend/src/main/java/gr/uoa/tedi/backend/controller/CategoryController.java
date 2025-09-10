@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gr.uoa.tedi.backend.service.CategoryService;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/auctions")
 @CrossOrigin(origins = "http://localhost:4200")
 public class CategoryController {
 
@@ -21,7 +21,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping
+    @GetMapping("/categories")
     public List<Category> getAllCategories() {
         return categoryService.getAllCategories();
     }
