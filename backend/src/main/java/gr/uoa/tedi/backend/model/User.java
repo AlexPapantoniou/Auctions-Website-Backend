@@ -55,16 +55,16 @@ public class User {
     public User() {
     }
 
-    public User(String user_name, String pass_word, String first_name, String last_name, String city,
-            String country, String email, String phone_number, String AFM) {
-        this.username = user_name;
-        this.password = pass_word;
-        this.firstname = first_name;
-        this.lastname = last_name;
+    public User(String username, String password, String firstname, String lastname, String city,
+            String country, String email, String phonenumber, String AFM) {
+        this.username = username;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.city = city;
         this.country = country;
         this.email = email;
-        this.phonenumber = phone_number;
+        this.phonenumber = phonenumber;
         this.afm = AFM;
         this.accepted = false;
         this.bidderRating = 0;

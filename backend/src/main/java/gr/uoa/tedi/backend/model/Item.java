@@ -14,7 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,9 +26,9 @@ public class Item {
     @Column(name = "itemid")
     private long itemid;
 
-    @OneToOne(mappedBy = "item")
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Auction auction;
+    private List<Auction> auctions;
 
     @Column(name = "name")
     private String name;
@@ -37,32 +37,15 @@ public class Item {
     @JoinTable(name = "itemcategory", joinColumns = @JoinColumn(name = "itemid"), inverseJoinColumns = @JoinColumn(name = "categoryid"))
     private List<Category> categories = new ArrayList<>();
 
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "location")
-    private String location;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "country")
-    private String country;
-
     @Column(name = "description", length = 1000)
     private String description;
 
     protected Item() {
     }
 
-    public Item(String name, List<Category> categories, String address, String location, String city, String country,
-            String description) {
+    public Item(String name, List<Category> categories, String description) {
         this.name = name;
         this.categories = categories;
-        this.address = address;
-        this.location = location;
-        this.city = city;
-        this.country = country;
         this.description = description;
     }
 
@@ -72,6 +55,14 @@ public class Item {
 
     public void setItemid(long itemid) {
         this.itemid = itemid;
+    }
+
+    public List<Auction> getAuctions() {
+        return auctions;
+    }
+
+    public void setAuctions(List<Auction> auctions) {
+        this.auctions = auctions;
     }
 
     public String getName() {
@@ -88,38 +79,6 @@ public class Item {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public String getDescription() {

@@ -25,22 +25,22 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     @Query("SELECT a FROM Auction a WHERE a.seller.userid = :sellerid")
     Page<Auction> findBySellerId(@Param("sellerid") Long sellerid, Pageable pageable);
 
-    @Query("SELECT DISTINCT a.item.location FROM Auction a")
+    @Query("SELECT DISTINCT a.location FROM Auction a")
     List<String> findAllLocations();
 
-    @Query("SELECT DISTINCT a.item.city FROM Auction a")
+    @Query("SELECT DISTINCT a.city FROM Auction a")
     List<String> findAllCities();
 
-    @Query("SELECT DISTINCT a.item.country FROM Auction a")
+    @Query("SELECT DISTINCT a.country FROM Auction a")
     List<String> findAllCountries();
 
-    @Query("SELECT a FROM Auction a WHERE a.item.location = :location")
+    @Query("SELECT a FROM Auction a WHERE a.location = :location")
     Page<Auction> findByLocation(String location, Pageable pageable);
 
-    @Query("SELECT a FROM Auction a WHERE a.item.city = :city")
+    @Query("SELECT a FROM Auction a WHERE a.city = :city")
     Page<Auction> findByCity(String city, Pageable pageable);
 
-    @Query("SELECT a FROM Auction a WHERE a.item.country = :country")
+    @Query("SELECT a FROM Auction a WHERE a.country = :country")
     Page<Auction> findByCountry(String country, Pageable pageable);
 
     void deleteById(Long id);

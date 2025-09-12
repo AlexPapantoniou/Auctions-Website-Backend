@@ -88,10 +88,12 @@ public class AuctionService {
     public Optional<Auction> updateAuction(Long auctionId, Auction updatedAuction) {
         return auctionRepository.findById(auctionId).map(existingAuction -> {
             existingAuction.setbuyPrice(updatedAuction.getbuyPrice());
+            existingAuction.setFirstBid(updatedAuction.getFirstBid());
+            existingAuction.setStartTime(updatedAuction.getStartTime());
             existingAuction.setEndTime(updatedAuction.getEndTime());
             existingAuction.getItem().setDescription(updatedAuction.getItem().getDescription());
-            existingAuction.getItem().setCity(updatedAuction.getItem().getCity());
-            existingAuction.getItem().setCountry(updatedAuction.getItem().getCountry());
+            existingAuction.setCity(updatedAuction.getCity());
+            existingAuction.setCountry(updatedAuction.getCountry());
 
             return auctionRepository.save(existingAuction);
         });

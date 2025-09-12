@@ -13,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,7 +28,7 @@ public class Auction {
     @JoinColumn(name = "userid", nullable = false)
     private User seller;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "itemid", referencedColumnName = "itemid", nullable = false)
     private Item item;
 
@@ -41,6 +40,18 @@ public class Auction {
 
     @Column(name = "buyprice")
     private Double buyPrice;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "country")
+    private String country;
 
     @Column(name = "numberofbids")
     private Integer numberOfBids = 0;
@@ -54,11 +65,14 @@ public class Auction {
     @Column(name = "endtime")
     private LocalDateTime endTime;
 
+    @Column(name = "active")
+    private Boolean active;
+
     public Auction() {
     }
 
     public Auction(User seller, Item item, Double firstBid, Double buyPrice, LocalDateTime startTime,
-            LocalDateTime endTime) {
+            LocalDateTime endTime, String address, String location, String city, String country) {
         this.seller = seller;
         this.item = item;
         this.firstBid = firstBid;
@@ -67,6 +81,11 @@ public class Auction {
         this.numberOfBids = 0;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.address = address;
+        this.location = location;
+        this.city = city;
+        this.country = country;
+        this.active = true;
     }
 
     public Long getAuctionid() {
@@ -139,6 +158,46 @@ public class Auction {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public Boolean isActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
 }

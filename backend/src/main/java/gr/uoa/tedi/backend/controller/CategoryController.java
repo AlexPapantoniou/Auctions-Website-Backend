@@ -12,7 +12,7 @@ import gr.uoa.tedi.backend.service.CategoryService;
 
 @RestController
 @RequestMapping("/auctions")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://localhost:4200")
 public class CategoryController {
 
     private final CategoryService categoryService;
