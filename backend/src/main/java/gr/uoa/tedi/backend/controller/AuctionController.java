@@ -108,8 +108,21 @@ public class AuctionController {
     }
 
     @PostMapping("/addauction")
-    public Auction addAuction(@RequestBody Auction auction) {
-        return auctionService.registerAuction(auction);
+    public ResponseEntity<Auction> addAuction(@RequestBody Auction auction) {
+        Auction saved = auctionService.registerAuction(auction);
+        return ResponseEntity.ok(saved);
+    }
+
+    @PostMapping("/{auctionid}/buy/{bidderid}")
+    public ResponseEntity<Auction> buyNow(
+            @PathVariable Long auctionid,
+            @PathVariable Long bidderid) {
+        try {
+            Auction auction = auctionService.buyNow(auctionid, bidderid);
+            return ResponseEntity.ok(auction);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/update/{auctionid}")

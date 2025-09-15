@@ -2,6 +2,8 @@ package gr.uoa.tedi.backend.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +24,7 @@ public class Bid {
 
     @ManyToOne
     @JoinColumn(name = "auctionid", nullable = false)
+    @JsonBackReference
     private Auction auction;
 
     @ManyToOne

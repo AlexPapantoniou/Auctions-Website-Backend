@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +29,9 @@ public class Auction {
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
     private User seller;
+
+    @ManyToOne
+    private User winner;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "itemid", referencedColumnName = "itemid", nullable = false)
@@ -57,6 +62,7 @@ public class Auction {
     private Integer numberOfBids = 0;
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Bid> bids = new ArrayList<>();
 
     @Column(name = "starttime")
@@ -104,6 +110,14 @@ public class Auction {
         this.seller = seller;
     }
 
+    public User getWinner() {
+        return winner;
+    }
+
+    public void setWinner(User winner) {
+        this.winner = winner;
+    }
+
     public Item getItem() {
         return item;
     }
@@ -128,11 +142,11 @@ public class Auction {
         this.currentBid = currentBid;
     }
 
-    public Double getbuyPrice() {
+    public Double getBuyPrice() {
         return buyPrice;
     }
 
-    public void setbuyPrice(Double buyPrice) {
+    public void setBuyPrice(Double buyPrice) {
         this.buyPrice = buyPrice;
     }
 
@@ -142,6 +156,14 @@ public class Auction {
 
     public void setNumberOfBids(Integer numberOfBids) {
         this.numberOfBids = numberOfBids;
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
     }
 
     public LocalDateTime getStartTime() {

@@ -1,30 +1,38 @@
 package gr.uoa.tedi.backend.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 import gr.uoa.tedi.backend.model.Category;
-
+import gr.uoa.tedi.backend.model.User;
+import gr.uoa.tedi.backend.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import gr.uoa.tedi.backend.model.Auction;
+import gr.uoa.tedi.backend.model.Bid;
 import gr.uoa.tedi.backend.repository.AuctionRepository;
 import gr.uoa.tedi.backend.repository.CategoryRepository;
 
 @Service
 public class AuctionService {
 
+    private final UserRepository userRepository;
+
     private final AuctionRepository auctionRepository;
     private final CategoryRepository categoryRepository;
 
     public AuctionService(
             AuctionRepository auctionRepository,
-            CategoryRepository categoryRepository) {
+            CategoryRepository categoryRepository, UserRepository userRepository) {
         this.auctionRepository = auctionRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     public Page<Auction> getAllAuctions(int page, int size) {
@@ -87,7 +95,7 @@ public class AuctionService {
 
     public Optional<Auction> updateAuction(Long auctionId, Auction updatedAuction) {
         return auctionRepository.findById(auctionId).map(existingAuction -> {
-            existingAuction.setbuyPrice(updatedAuction.getbuyPrice());
+            existingAuction.setBuyPrice(updatedAuction.getBuyPrice());
             existingAuction.setFirstBid(updatedAuction.getFirstBid());
             existingAuction.setStartTime(updatedAuction.getStartTime());
             existingAuction.setEndTime(updatedAuction.getEndTime());
@@ -97,6 +105,72 @@ public class AuctionService {
 
             return auctionRepository.save(existingAuction);
         });
+    }
+
+    @Transactional
+    public void closeExpiredAuctions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        List<Auction> expiredAuctions = auctionRepository.findByEndTimeBeforeAndActiveIsTrue(currentTime);
+
+        for (Auction auction : expiredAuctions) {
+
+            System.out.println("Auction " + auction.getAuctionid() + " endTime: " + auction.getEndTime() +
+                    ", currentTime: " + currentTime);
+
+            if (!auction.isActive()) {
+                continue;
+            }
+
+            auction.setActive(false);
+
+            Bid winningBid = auction.getBids().stream()
+                    .max(Comparator.comparingDouble(Bid::getAmount))
+                    .orElse(null);
+
+            if (winningBid != null) {
+                User winner = winningBid.getBidder();
+                auction.setWinner(winner);
+
+                winner.setBidderRating(winner.getBidderRating() + (int) (winningBid.getAmount() * 1));
+                userRepository.save(winner);
+
+                User seller = auction.getSeller();
+                seller.setSellerRating(seller.getSellerRating() + (int) (winningBid.getAmount() * 1));
+                userRepository.save(seller);
+            }
+
+            auctionRepository.save(auction);
+        }
+    }
+
+    @Transactional
+    public Auction buyNow(Long auctionId, Long bidderId) {
+        Auction auction = auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new RuntimeException("Auction not found"));
+
+        if (!auction.isActive()) {
+            throw new RuntimeException("Auction is not currently active");
+        }
+
+        if (auction.getBuyPrice() == null) {
+            throw new RuntimeException("This auction does not support 'Buy Now'");
+        }
+
+        User bidder = userRepository.findById(bidderId)
+                .orElseThrow(() -> new RuntimeException("Bidder not found"));
+
+        auction.setActive(false);
+        auction.setEndTime(LocalDateTime.now());
+        auction.setWinner(bidder);
+
+        bidder.setBidderRating(bidder.getBidderRating() + (int) (auction.getBuyPrice() * 1));
+        userRepository.save(bidder);
+
+        User seller = auction.getSeller();
+        seller.setSellerRating(seller.getSellerRating() + (int) (auction.getBuyPrice() * 1));
+        userRepository.save(seller);
+
+        return auctionRepository.save(auction);
     }
 
     public void deleteAuction(Long auctionid) {
