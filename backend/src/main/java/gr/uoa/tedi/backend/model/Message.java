@@ -38,8 +38,8 @@ public class Message {
     @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp = LocalDateTime.now();
 
-    @Column(name = "read", nullable = false)
-    private Boolean read = false;
+    @Column(name = "is_read")
+    private Boolean read;
 
     public Message() {
     }
@@ -49,6 +49,7 @@ public class Message {
         this.receiver = receiver;
         this.auction = auction;
         this.content = content;
+        this.read = false;
     }
 
     public User getSender() {
@@ -91,7 +92,7 @@ public class Message {
         this.timestamp = timestamp;
     }
 
-    public Boolean getRead() {
+    public Boolean isRead() {
         return read;
     }
 

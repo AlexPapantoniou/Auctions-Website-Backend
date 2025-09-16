@@ -74,6 +74,9 @@ public class Auction {
     @Column(name = "active")
     private Boolean active;
 
+    @OneToMany(mappedBy = "auction")
+    private List<Message> messages = new ArrayList<>();
+
     public Auction() {
     }
 
