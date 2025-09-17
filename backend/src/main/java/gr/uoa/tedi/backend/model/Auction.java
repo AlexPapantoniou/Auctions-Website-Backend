@@ -1,6 +1,6 @@
 package gr.uoa.tedi.backend.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,14 +65,14 @@ public class Auction {
     @JsonManagedReference
     private List<Bid> bids = new ArrayList<>();
 
-    @Column(name = "starttime")
-    private LocalDateTime startTime;
+    @Column(name = "starttime", columnDefinition = "TIMESTAMP(6)")
+    private Instant startTime;
 
-    @Column(name = "endtime")
-    private LocalDateTime endTime;
+    @Column(name = "endtime", columnDefinition = "TIMESTAMP(6)")
+    private Instant endTime;
 
     @Column(name = "active")
-    private Boolean active;
+    private Boolean active = true;
 
     @OneToMany(mappedBy = "auction")
     private List<Message> messages = new ArrayList<>();
@@ -80,8 +80,8 @@ public class Auction {
     public Auction() {
     }
 
-    public Auction(User seller, Item item, Double firstBid, Double buyPrice, LocalDateTime startTime,
-            LocalDateTime endTime, String address, String location, String city, String country) {
+    public Auction(User seller, Item item, Double firstBid, Double buyPrice, Instant startTime,
+            Instant endTime, String address, String location, String city, String country) {
         this.seller = seller;
         this.item = item;
         this.firstBid = firstBid;
@@ -169,19 +169,19 @@ public class Auction {
         this.bids = bids;
     }
 
-    public LocalDateTime getStartTime() {
+    public Instant getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(Instant startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public Instant getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(Instant endTime) {
         this.endTime = endTime;
     }
 

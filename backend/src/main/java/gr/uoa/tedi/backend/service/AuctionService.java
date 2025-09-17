@@ -1,6 +1,6 @@
 package gr.uoa.tedi.backend.service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -109,18 +109,9 @@ public class AuctionService {
 
     @Transactional
     public void closeExpiredAuctions() {
-        LocalDateTime currentTime = LocalDateTime.now();
-        List<Auction> expiredAuctions = auctionRepository.findByEndTimeBeforeAndActiveIsTrue(currentTime);
+        List<Auction> expiredAuctions = auctionRepository.findByEndTimeBeforeAndActiveIsTrue(Instant.now());
 
         for (Auction auction : expiredAuctions) {
-
-            System.out.println("Auction " + auction.getAuctionid() + " endTime: " + auction.getEndTime() +
-                    ", currentTime: " + currentTime);
-
-            if (!auction.isActive()) {
-                continue;
-            }
-
             auction.setActive(false);
 
             Bid winningBid = auction.getBids().stream()
@@ -160,7 +151,7 @@ public class AuctionService {
                 .orElseThrow(() -> new RuntimeException("Bidder not found"));
 
         auction.setActive(false);
-        auction.setEndTime(LocalDateTime.now());
+        auction.setEndTime(Instant.now());
         auction.setWinner(bidder);
 
         bidder.setBidderRating(bidder.getBidderRating() + (int) (auction.getBuyPrice() * 1));

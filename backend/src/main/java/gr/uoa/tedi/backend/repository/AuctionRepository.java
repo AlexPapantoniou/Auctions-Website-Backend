@@ -1,6 +1,6 @@
 package gr.uoa.tedi.backend.repository;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -44,7 +44,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     @Query("SELECT a FROM Auction a WHERE a.country = :country")
     Page<Auction> findByCountry(String country, Pageable pageable);
 
-    List<Auction> findByEndTimeBeforeAndActiveIsTrue(LocalDateTime currentTime);
+    List<Auction> findByEndTimeBeforeAndActiveIsTrue(Instant currentTime);
 
     void deleteById(Long id);
 
