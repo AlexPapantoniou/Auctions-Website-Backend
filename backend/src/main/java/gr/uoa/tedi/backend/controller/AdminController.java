@@ -1,12 +1,16 @@
 package gr.uoa.tedi.backend.controller;
 
 import gr.uoa.tedi.backend.model.User;
+import gr.uoa.tedi.backend.model.export.ItemsExport;
+import gr.uoa.tedi.backend.service.AuctionService;
 import gr.uoa.tedi.backend.service.UserService;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/auctions")
@@ -14,9 +18,13 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
+    private final AuctionService auctionSerice;
 
-    public AdminController(UserService userService) {
+    public AdminController(
+            UserService userService,
+            AuctionService auctionService) {
         this.userService = userService;
+        this.auctionSerice = auctionService;
     }
 
     @GetMapping("/admin/users")
@@ -34,4 +42,10 @@ public class AdminController {
         userService.deleteUser(userid);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping(value = "admin/export/xml", produces = MediaType.APPLICATION_XML_VALUE)
+    public ItemsExport exportAuctionsAsXml() {
+        return auctionSerice.exportAuctionsAsXml();
+    }
+
 }

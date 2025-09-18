@@ -25,10 +25,6 @@ public class Message {
     private User sender;
 
     @ManyToOne
-    @JoinColumn(name = "receiverid", nullable = false)
-    private User receiver;
-
-    @ManyToOne
     @JoinColumn(name = "auctionid", nullable = false)
     private Auction auction;
 
@@ -39,17 +35,24 @@ public class Message {
     private Instant timestamp = Instant.now();
 
     @Column(name = "is_read")
-    private Boolean read;
+    private Boolean read = false;
 
     public Message() {
     }
 
     public Message(User sender, User receiver, Auction auction, String content) {
         this.sender = sender;
-        this.receiver = receiver;
         this.auction = auction;
         this.content = content;
         this.read = false;
+    }
+
+    public Long getMessageid() {
+        return messageid;
+    }
+
+    public void setMessageid(Long messageid) {
+        this.messageid = messageid;
     }
 
     public User getSender() {
@@ -58,14 +61,6 @@ public class Message {
 
     public void setSender(User sender) {
         this.sender = sender;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
     }
 
     public Auction getAuction() {

@@ -1,6 +1,6 @@
 package gr.uoa.tedi.backend.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -32,15 +32,15 @@ public class Bid {
     private User bidder;
 
     @Column(name = "amount", nullable = false)
-    private double amount;
+    private Double amount;
 
-    @Column(name = "time", nullable = false)
-    private LocalDateTime time;
+    @Column(name = "time", columnDefinition = "TIMESTAMP(6)", nullable = false)
+    private Instant time;
 
     public Bid() {
     }
 
-    public Bid(Auction auction, User bidder, double amount, LocalDateTime time) {
+    public Bid(Auction auction, User bidder, Double amount, Instant time) {
         this.auction = auction;
         this.bidder = bidder;
         this.amount = amount;
@@ -71,19 +71,19 @@ public class Bid {
         this.bidder = bidder;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public LocalDateTime getTime() {
+    public Instant getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(Instant time) {
         this.time = time;
     }
 

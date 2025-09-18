@@ -119,11 +119,11 @@ public class User {
         this.city = city;
     }
 
-    public String getcountry() {
+    public String getCountry() {
         return country;
     }
 
-    public void setcountry(String country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 

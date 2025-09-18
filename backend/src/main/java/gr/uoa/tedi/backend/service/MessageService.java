@@ -23,14 +23,18 @@ public class MessageService {
     }
 
     public List<Message> getMessagesByAuction(Long auctionid) {
-        Auction auction = this.auctionRepository.findById(auctionid)
+        Auction auction = auctionRepository.findById(auctionid)
                 .orElseThrow(() -> new RuntimeException("Auction not found"));
 
         return messageRepository.findByAuctionOrderByTimestampAsc(auction);
     }
 
     public Message sendMessage(Message message) {
-        return this.messageRepository.save(message);
+        return messageRepository.save(message);
+    }
+
+    public void deleteMessage(Long messageid) {
+        messageRepository.deleteById(messageid);
     }
 
 }

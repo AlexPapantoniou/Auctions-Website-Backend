@@ -134,7 +134,7 @@ public class AuctionController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{auctionid}")
     public ResponseEntity<Void> deleteAuction(@PathVariable Long auctionid) {
         auctionService.deleteAuction(auctionid);
         return ResponseEntity.noContent().build();
