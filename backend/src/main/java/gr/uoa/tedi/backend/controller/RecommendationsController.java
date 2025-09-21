@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/recommendations")
+@RequestMapping("/auctions/recommendations")
 @CrossOrigin(origins = "https://localhost:4200")
 public class RecommendationsController {
 

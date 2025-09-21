@@ -21,7 +21,7 @@ public class UserAuctionInteraction {
     private Auction auction;
 
     @Column(name = "interaction_type")
-    private String iteractionType;
+    private String interactionType;
 
     @Column(name = "weight")
     private Double weight;
@@ -29,10 +29,10 @@ public class UserAuctionInteraction {
     public UserAuctionInteraction() {
     }
 
-    public UserAuctionInteraction(User user, Auction auction, String iteractionType, Double weight) {
+    public UserAuctionInteraction(User user, Auction auction, String interactionType, Double weight) {
         this.user = user;
         this.auction = auction;
-        this.iteractionType = iteractionType;
+        this.interactionType = interactionType;
         this.weight = weight;
     }
 
@@ -60,12 +60,12 @@ public class UserAuctionInteraction {
         this.auction = auction;
     }
 
-    public String getIteractionType() {
-        return iteractionType;
+    public String getInteractionType() {
+        return interactionType;
     }
 
-    public void setIteractionType(String iteractionType) {
-        this.iteractionType = iteractionType;
+    public void setInteractionType(String interactionType) {
+        this.interactionType = interactionType;
     }
 
     public Double getWeight() {

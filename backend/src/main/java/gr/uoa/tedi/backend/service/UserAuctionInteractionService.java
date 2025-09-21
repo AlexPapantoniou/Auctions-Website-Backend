@@ -1,6 +1,7 @@
 package gr.uoa.tedi.backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,20 +22,28 @@ public class UserAuctionInteractionService {
 
     @Transactional
     public UserAuctionInteraction logInteraction(User user, Auction auction, String type, Double weight) {
-        UserAuctionInteraction interaction = new UserAuctionInteraction();
-        interaction.setUser(user);
-        interaction.setAuction(auction);
-        interaction.setIteractionType(type);
-        interaction.setWeight(weight);
+        Optional<UserAuctionInteraction> optOld = userAuctionInteractionRepository
+                .findByUserUseridAndAuctionAuctionid(user.getUserid(), auction.getAuctionid());
+        if (optOld.isPresent()) {
+            UserAuctionInteraction old = optOld.get();
+            old.setWeight(old.getWeight() + weight);
+            return userAuctionInteractionRepository.save(old);
+        } else {
+            UserAuctionInteraction interaction = new UserAuctionInteraction();
+            interaction.setUser(user);
+            interaction.setAuction(auction);
+            interaction.setInteractionType(type);
+            interaction.setWeight(weight);
 
-        return interaction;
+            return userAuctionInteractionRepository.save(interaction);
+        }
     }
 
     public List<UserAuctionInteraction> getInteractionsByUser(Long userid) {
-        return userAuctionInteractionRepository.findByUserUserId(userid);
+        return userAuctionInteractionRepository.findByUserUserid(userid);
     }
 
     public List<UserAuctionInteraction> getInteractionsByAuction(Long auctionid) {
-        return userAuctionInteractionRepository.findByAuctionAuctionId(auctionid);
+        return userAuctionInteractionRepository.findByAuctionAuctionid(auctionid);
     }
 }

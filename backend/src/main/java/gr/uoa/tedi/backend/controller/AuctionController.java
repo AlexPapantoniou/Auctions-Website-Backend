@@ -62,9 +62,9 @@ public class AuctionController {
         return auctionService.getAuctionsBySeller(sellerid, page, size);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Auction> getAuctionById(@PathVariable Long id) {
-        Auction auction = auctionService.getAuctionById(id);
+    @GetMapping("/{auctionid}")
+    public ResponseEntity<Auction> getAuctionById(@PathVariable Long auctionid) {
+        Auction auction = auctionService.getAuctionById(auctionid);
         return auction != null ? ResponseEntity.ok(auction) : ResponseEntity.notFound().build();
     }
 
@@ -105,6 +105,14 @@ public class AuctionController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         return auctionService.getAuctionsByCountry(country, page, size);
+    }
+
+    @GetMapping("/ordered/{userid}")
+    public Page<Auction> getAuctionsOrderedByWeight(
+            @PathVariable Long userid,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return auctionService.getAuctionsOrderedByWeight(userid, page, size);
     }
 
     @PostMapping("/addauction")

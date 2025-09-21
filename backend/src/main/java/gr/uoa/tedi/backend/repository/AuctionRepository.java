@@ -36,13 +36,18 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     List<String> findAllCountries();
 
     @Query("SELECT a FROM Auction a WHERE a.location = :location")
-    Page<Auction> findByLocation(String location, Pageable pageable);
+    Page<Auction> findByLocation(@Param("location") String location, Pageable pageable);
 
     @Query("SELECT a FROM Auction a WHERE a.city = :city")
-    Page<Auction> findByCity(String city, Pageable pageable);
+    Page<Auction> findByCity(@Param("city") String city, Pageable pageable);
 
     @Query("SELECT a FROM Auction a WHERE a.country = :country")
-    Page<Auction> findByCountry(String country, Pageable pageable);
+    Page<Auction> findByCountry(@Param("country") String country, Pageable pageable);
+
+    @Query("SELECT a FROM Auction a " +
+            "LEFT JOIN UserAuctionInteraction uai ON uai.auction = a AND uai.user.userid = :userid " +
+            "ORDER BY COALESCE(uai.weight, 0) DESC, a.startTime DESC")
+    Page<Auction> findAllOrderByWeight(@Param("userid") Long userid, Pageable pageable);
 
     List<Auction> findByEndTimeBeforeAndActiveIsTrue(Instant currentTime);
 

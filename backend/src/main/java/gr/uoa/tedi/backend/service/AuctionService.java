@@ -86,6 +86,10 @@ public class AuctionService {
         return auctionRepository.findByCountry(country, PageRequest.of(page, size));
     }
 
+    public Page<Auction> getAuctionsOrderedByWeight(Long userid, int page, int size) {
+        return auctionRepository.findAllOrderByWeight(userid, PageRequest.of(page, size));
+    }
+
     public Auction registerAuction(Auction auction) {
         auction.setCurrentBid(auction.getFirstBid());
         List<Category> itemCategories = new ArrayList<>();

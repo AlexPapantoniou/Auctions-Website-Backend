@@ -4,6 +4,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+// import org.springframework.data.web.config.EnableSpringDataWebSupport;
+// import org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -11,6 +13,8 @@ import gr.uoa.tedi.backend.model.User;
 import gr.uoa.tedi.backend.repository.UserRepository;
 
 @EnableScheduling
+// @EnableSpringDataWebSupport(pageSerializationMode =
+// PageSerializationMode.VIA_DTO)
 @SpringBootApplication
 public class AuctionsApplication {
 
