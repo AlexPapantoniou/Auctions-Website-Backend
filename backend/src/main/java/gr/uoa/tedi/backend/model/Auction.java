@@ -72,7 +72,7 @@ public class Auction {
     private Instant endTime;
 
     @Column(name = "active")
-    private Boolean active = true;
+    private Boolean active = false;
 
     @OneToMany(mappedBy = "auction")
     private List<Message> messages = new ArrayList<>();
@@ -94,7 +94,7 @@ public class Auction {
         this.location = location;
         this.city = city;
         this.country = country;
-        this.active = true;
+        this.active = false;
     }
 
     public Long getAuctionid() {

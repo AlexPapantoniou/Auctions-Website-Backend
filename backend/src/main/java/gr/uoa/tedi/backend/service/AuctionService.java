@@ -86,8 +86,8 @@ public class AuctionService {
         return auctionRepository.findByCountry(country, PageRequest.of(page, size));
     }
 
-    public Page<Auction> getAuctionsOrderedByWeight(Long userid, int page, int size) {
-        return auctionRepository.findAllOrderByWeight(userid, PageRequest.of(page, size));
+    public Page<Auction> getAuctionsOrderedByWeightAndActive(Long userid, boolean activeOnly, int page, int size) {
+        return auctionRepository.findAllOrderByWeightAndActive(userid, activeOnly, PageRequest.of(page, size));
     }
 
     public Auction registerAuction(Auction auction) {
@@ -116,6 +116,16 @@ public class AuctionService {
 
             return auctionRepository.save(existingAuction);
         });
+    }
+
+    @Transactional
+    public void activateAuctions() {
+        List<Auction> startingAuctions = auctionRepository.findStartingAuctions(Instant.now());
+
+        for (Auction auction : startingAuctions) {
+            auction.setActive(true);
+            auctionRepository.save(auction);
+        }
     }
 
     @Transactional

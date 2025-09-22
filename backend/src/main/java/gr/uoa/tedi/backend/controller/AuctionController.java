@@ -108,11 +108,12 @@ public class AuctionController {
     }
 
     @GetMapping("/ordered/{userid}")
-    public Page<Auction> getAuctionsOrderedByWeight(
+    public Page<Auction> getAuctionsOrderedByWeightAndActive(
             @PathVariable Long userid,
+            @RequestParam(defaultValue = "false") boolean activeOnly,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return auctionService.getAuctionsOrderedByWeight(userid, page, size);
+        return auctionService.getAuctionsOrderedByWeightAndActive(userid, activeOnly, page, size);
     }
 
     @PostMapping("/addauction")

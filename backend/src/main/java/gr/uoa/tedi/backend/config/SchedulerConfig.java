@@ -20,4 +20,9 @@ public class SchedulerConfig {
     public void autoCloseAuctions() {
         auctionService.closeExpiredAuctions();
     }
+
+    @Scheduled(fixedRate = 60000)
+    public void autoActivateAuctions() {
+        auctionService.activateAuctions();
+    }
 }
