@@ -1,7 +1,5 @@
 package gr.uoa.tedi.backend.model.export;
 
-import java.time.Instant;
-
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -13,7 +11,7 @@ public class BidExport {
     private BidderExport bidder;
 
     @XmlElement(name = "Time")
-    private Instant time;
+    private String time;
 
     @XmlElement(name = "Amount")
     private String amount;
@@ -21,7 +19,7 @@ public class BidExport {
     public BidExport() {
     }
 
-    public BidExport(BidderExport bidder, Instant time, String amount) {
+    public BidExport(BidderExport bidder, String time, String amount) {
         this.bidder = bidder;
         this.time = time;
         this.amount = amount;
@@ -35,11 +33,11 @@ public class BidExport {
         this.bidder = bidder;
     }
 
-    public Instant getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Instant time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

@@ -5,16 +5,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import gr.uoa.tedi.backend.model.Category;
 import gr.uoa.tedi.backend.model.User;
-import gr.uoa.tedi.backend.model.export.BidExport;
-import gr.uoa.tedi.backend.model.export.BidderExport;
-import gr.uoa.tedi.backend.model.export.BidsExport;
-import gr.uoa.tedi.backend.model.export.ItemExport;
-import gr.uoa.tedi.backend.model.export.ItemsExport;
-import gr.uoa.tedi.backend.model.export.SellerExport;
 import gr.uoa.tedi.backend.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -187,63 +180,6 @@ public class AuctionService {
 
     public void deleteAuction(Long auctionid) {
         auctionRepository.deleteById(auctionid);
-    }
-
-    private ItemExport mapAuctionToItemExport(Auction auction) {
-        ItemExport itemExport = new ItemExport();
-
-        itemExport.setItemID(auction.getAuctionid());
-        itemExport.setName(auction.getItem().getName());
-
-        itemExport.setCategories(auction.getItem().getCategories()
-                .stream()
-                .map(c -> c.getName())
-                .toList());
-        itemExport.setCurrently("$" + auction.getCurrentBid());
-        itemExport.setBuyPrice(auction.getBuyPrice() != null ? "$" + auction.getBuyPrice() : null);
-        itemExport.setFirstBid("$" + auction.getFirstBid());
-        itemExport.setNumberOfBids(auction.getNumberOfBids());
-
-        List<BidExport> bidExports = auction.getBids().stream().map(bid -> {
-            BidderExport bidderExport = new BidderExport();
-            bidderExport.setRating(bid.getBidder().getBidderRating());
-            bidderExport.setUserID(bid.getBidder().getUsername());
-            bidderExport.setLocation(bid.getBidder().getCity());
-            bidderExport.setCountry(bid.getBidder().getCountry());
-
-            BidExport bidExport = new BidExport();
-            bidExport.setBidder(bidderExport);
-            bidExport.setTime(bid.getTime());
-            bidExport.setAmount("$" + bid.getAmount());
-
-            return bidExport;
-        }).toList();
-
-        BidsExport bidsExport = new BidsExport();
-        bidsExport.setBids(bidExports);
-        itemExport.setBids(bidsExport);
-
-        itemExport.setLocation(auction.getAddress() + ", " + auction.getLocation() + ", " + auction.getCity());
-        itemExport.setCountry(auction.getCountry());
-        itemExport.setStarted(auction.getStartTime());
-        itemExport.setEnds(auction.getEndTime());
-
-        SellerExport sellerExport = new SellerExport();
-        sellerExport.setRating(auction.getSeller().getSellerRating());
-        sellerExport.setUserID(auction.getSeller().getUsername());
-        itemExport.setSeller(sellerExport);
-
-        itemExport.setDescription(auction.getItem().getDescription());
-
-        return itemExport;
-    }
-
-    public ItemsExport exportAuctionsAsXml() {
-        List<ItemExport> items = auctionRepository.findAll().stream()
-                .map(auction -> mapAuctionToItemExport(auction))
-                .collect(Collectors.toList());
-
-        return new ItemsExport(items);
     }
 
 }

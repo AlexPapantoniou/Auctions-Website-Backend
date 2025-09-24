@@ -1,6 +1,5 @@
 package gr.uoa.tedi.backend.model.export;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,7 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ItemExport {
+public class AuctionExport {
 
     @XmlAttribute(name = "ItemID")
     private Long itemID;
@@ -43,10 +42,10 @@ public class ItemExport {
     private String country;
 
     @XmlElement(name = "Started")
-    private Instant started;
+    private String started;
 
     @XmlElement(name = "Ends")
-    private Instant ends;
+    private String ends;
 
     @XmlElement(name = "Seller")
     private SellerExport seller;
@@ -54,12 +53,12 @@ public class ItemExport {
     @XmlElement(name = "Description")
     private String description;
 
-    public ItemExport() {
+    public AuctionExport() {
     }
 
-    public ItemExport(Long itemID, String name, List<String> categories, String currently, String buyPrice,
-            String firstBid, int numberOfBids, BidsExport bids, String location, String country, Instant started,
-            Instant ends, SellerExport seller, String description) {
+    public AuctionExport(Long itemID, String name, List<String> categories, String currently, String buyPrice,
+            String firstBid, int numberOfBids, BidsExport bids, String location, String country, String started,
+            String ends, SellerExport seller, String description) {
         this.itemID = itemID;
         this.name = name;
         this.categories = categories;
@@ -156,19 +155,19 @@ public class ItemExport {
         this.country = country;
     }
 
-    public Instant getStarted() {
+    public String getStarted() {
         return started;
     }
 
-    public void setStarted(Instant started) {
+    public void setStarted(String started) {
         this.started = started;
     }
 
-    public Instant getEnds() {
+    public String getEnds() {
         return ends;
     }
 
-    public void setEnds(Instant ends) {
+    public void setEnds(String ends) {
         this.ends = ends;
     }
 

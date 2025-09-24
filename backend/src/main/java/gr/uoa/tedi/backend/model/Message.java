@@ -34,9 +34,6 @@ public class Message {
     @Column(name = "timestamp", columnDefinition = "TIMESTAMP(6)", nullable = false)
     private Instant timestamp = Instant.now();
 
-    @Column(name = "is_read")
-    private Boolean read = false;
-
     public Message() {
     }
 
@@ -44,7 +41,6 @@ public class Message {
         this.sender = sender;
         this.auction = auction;
         this.content = content;
-        this.read = false;
     }
 
     public Long getMessageid() {
@@ -85,14 +81,6 @@ public class Message {
 
     public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public Boolean isRead() {
-        return read;
-    }
-
-    public void setRead(Boolean read) {
-        this.read = read;
     }
 
 }
