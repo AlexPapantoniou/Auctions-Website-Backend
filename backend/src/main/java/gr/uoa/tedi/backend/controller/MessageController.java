@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/auctions")
+@RequestMapping("/auctions/messages")
 @CrossOrigin(origins = "https://localhost:4200")
 public class MessageController {
 
@@ -26,17 +26,29 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @GetMapping("/messages/{auctionid}")
+    @GetMapping("/{auctionid}")
     public List<Message> getMessagesByAuction(@PathVariable Long auctionid) {
         return messageService.getMessagesByAuction(auctionid);
     }
 
-    @PostMapping("/messages/send")
+    @GetMapping("/{auctionid}/unread-count/{receiverid}")
+    public Long getUnreadMessagesCount(
+            @PathVariable Long auctionid,
+            @PathVariable Long receiverid) {
+        return messageService.getUnreadMessagesCount(auctionid, receiverid);
+    }
+
+    @PostMapping("/read")
+    public Message messageWasRead(@RequestBody Message message) {
+        return messageService.messageWasRead(message);
+    }
+
+    @PostMapping("/send")
     public Message sendMessage(@RequestBody Message message) {
         return messageService.sendMessage(message);
     }
 
-    @DeleteMapping("/messages/delete/{messageid}")
+    @DeleteMapping("/delete/{messageid}")
     public ResponseEntity<Void> deleteMessage(@PathVariable Long messageid) {
         messageService.deleteMessage(messageid);
         return ResponseEntity.noContent().build();

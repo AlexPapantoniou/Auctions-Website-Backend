@@ -60,6 +60,7 @@ public class UserService {
     public User acceptUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         user.setAccepted(true);
         return userRepository.save(user);
     }

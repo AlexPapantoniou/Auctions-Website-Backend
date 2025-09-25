@@ -14,6 +14,7 @@ import gr.uoa.tedi.backend.repository.UserRepository;
 @SpringBootApplication
 public class AuctionsApplication {
 
+	// Encoder to not store raw passwords in the database
 	private final PasswordEncoder passwordEncoder;
 
 	public AuctionsApplication(PasswordEncoder passwordEncoder) {
@@ -24,6 +25,7 @@ public class AuctionsApplication {
 		SpringApplication.run(AuctionsApplication.class, args);
 	}
 
+	// Upon running the app backend, auto-create the "admin" user if not existent
 	@Bean
 	CommandLineRunner init(UserRepository userRepository) {
 		return args -> {
@@ -33,8 +35,8 @@ public class AuctionsApplication {
 				admin.setUsername("admin");
 				admin.setPassword(passwordEncoder.encode("admin123"));
 				admin.setFirstname("Admin");
-				admin.setLastname("User");
-				admin.setEmail("admin@example.com");
+				admin.setLastname("Admin");
+				admin.setEmail("admin@gmail.com");
 				admin.setAccepted(true);
 
 				userRepository.save(admin);

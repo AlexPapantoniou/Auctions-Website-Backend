@@ -41,6 +41,10 @@ public class BidService {
                 .orElseThrow(
                         () -> new RuntimeException("Auction not found with id " + bid.getAuction().getAuctionid()));
 
+        if (!auction.isActive()) {
+            throw new RuntimeException("Auction not currently active");
+        }
+
         User bidder = userRepository.findById(bid.getBidder().getUserid())
                 .orElseThrow(
                         () -> new RuntimeException("User not found with id " + bid.getBidder().getUserid()));

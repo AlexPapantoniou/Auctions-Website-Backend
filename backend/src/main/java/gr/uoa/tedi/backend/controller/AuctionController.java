@@ -30,19 +30,11 @@ public class AuctionController {
         this.auctionService = auctionService;
     }
 
-    @GetMapping
-    public Page<Auction> getAllAuctions(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
-        return auctionService.getAllAuctions(page, size);
-    }
-
     @GetMapping("/search")
     public Page<Auction> searchAuctions(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         return auctionService.searchAuctions(keyword, page, size);
     }
 
@@ -50,7 +42,7 @@ public class AuctionController {
     public Page<Auction> searchAuctionsByCategory(
             @RequestParam String category,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         return auctionService.searchAuctionsByCategory(category, page, size);
     }
 
@@ -58,7 +50,7 @@ public class AuctionController {
     public Page<Auction> getAuctionsBySeller(
             @PathVariable Long sellerid,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         return auctionService.getAuctionsBySeller(sellerid, page, size);
     }
 
@@ -87,7 +79,7 @@ public class AuctionController {
     public Page<Auction> getAuctionsByLocation(
             @PathVariable String location,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         return auctionService.getAuctionsByLocation(location, page, size);
     }
 
@@ -95,7 +87,7 @@ public class AuctionController {
     public Page<Auction> getAuctionsByCity(
             @PathVariable String city,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         return auctionService.getAuctionsByCity(city, page, size);
     }
 
@@ -103,7 +95,7 @@ public class AuctionController {
     public Page<Auction> getAuctionsByCountry(
             @PathVariable String country,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         return auctionService.getAuctionsByCountry(country, page, size);
     }
 
@@ -112,7 +104,7 @@ public class AuctionController {
             @PathVariable Long userid,
             @RequestParam(defaultValue = "false") boolean activeOnly,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         return auctionService.getAuctionsOrderedByWeightAndActive(userid, activeOnly, page, size);
     }
 

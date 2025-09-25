@@ -26,7 +26,7 @@ public class ItemController {
     public Page<Item> getItemsByOwner(
             @PathVariable Long ownerid,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "5") int size) {
         return itemService.getItemsByOwner(ownerid, page, size);
     }
 

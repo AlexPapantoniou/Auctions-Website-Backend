@@ -29,6 +29,15 @@ public class MessageService {
         return messageRepository.findByAuctionOrderByTimestampAsc(auction);
     }
 
+    public Long getUnreadMessagesCount(Long auctionid, Long receiverid) {
+        return messageRepository.getUnreadMessagesCount(auctionid, receiverid);
+    }
+
+    public Message messageWasRead(Message message) {
+        message.setRead(true);
+        return messageRepository.save(message);
+    }
+
     public Message sendMessage(Message message) {
         return messageRepository.save(message);
     }

@@ -35,10 +35,6 @@ public class AuctionService {
         this.userRepository = userRepository;
     }
 
-    public Page<Auction> getAllAuctions(int page, int size) {
-        return auctionRepository.findAll(PageRequest.of(page, size));
-    }
-
     public Page<Auction> searchAuctions(String keyword, int page, int size) {
         return auctionRepository.searchByKeyword(keyword, PageRequest.of(page, size));
     }
