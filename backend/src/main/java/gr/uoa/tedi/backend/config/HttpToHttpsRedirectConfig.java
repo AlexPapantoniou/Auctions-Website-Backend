@@ -15,6 +15,7 @@ public class HttpToHttpsRedirectConfig {
         return factory;
     }
 
+    // Change the connection to https from port 8080 to 8443 (for security)
     private Connector httpConnector() {
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
         connector.setScheme("http");

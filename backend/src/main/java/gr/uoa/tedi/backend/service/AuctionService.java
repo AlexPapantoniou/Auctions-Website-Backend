@@ -63,6 +63,14 @@ public class AuctionService {
         return auctionRepository.findAllCountries();
     }
 
+    public Double getMinPrice() {
+        return auctionRepository.findMinPrice();
+    }
+
+    public Double getMaxPrice() {
+        return auctionRepository.findMaxPrice();
+    }
+
     public Page<Auction> getAuctionsByLocation(String location, int page, int size) {
         return auctionRepository.findByLocation(location, PageRequest.of(page, size));
     }
@@ -73,6 +81,10 @@ public class AuctionService {
 
     public Page<Auction> getAuctionsByCountry(String country, int page, int size) {
         return auctionRepository.findByCountry(country, PageRequest.of(page, size));
+    }
+
+    public Page<Auction> getAuctionsByPrice(Double minPrice, Double maxPrice, int page, int size) {
+        return auctionRepository.findByPrice(minPrice, maxPrice, PageRequest.of(page, size));
     }
 
     public Page<Auction> getAuctionsOrderedByWeightAndActive(Long userid, boolean activeOnly, int page, int size) {
@@ -119,7 +131,7 @@ public class AuctionService {
 
     @Transactional
     public void closeExpiredAuctions() {
-        List<Auction> expiredAuctions = auctionRepository.findByEndTimeBeforeAndActiveIsTrue(Instant.now());
+        List<Auction> expiredAuctions = auctionRepository.findFinishedAuctions(Instant.now());
 
         for (Auction auction : expiredAuctions) {
             auction.setActive(false);

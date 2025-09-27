@@ -35,6 +35,12 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
         @Query("SELECT DISTINCT a.country FROM Auction a")
         List<String> findAllCountries();
 
+        @Query("SELECT MIN(a.currentBid) FROM Auction a WHERE a.active = true")
+        Double findMinPrice();
+
+        @Query("SELECT MAX(a.currentBid) FROM Auction a WHERE a.active = true")
+        Double findMaxPrice();
+
         @Query("SELECT a FROM Auction a WHERE a.location = :location")
         Page<Auction> findByLocation(@Param("location") String location, Pageable pageable);
 
@@ -43,6 +49,10 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
         @Query("SELECT a FROM Auction a WHERE a.country = :country")
         Page<Auction> findByCountry(@Param("country") String country, Pageable pageable);
+
+        @Query("SELECT a FROM Auction a WHERE a.currentBid >= :minPrice AND a.currentBid <= :maxPrice")
+        Page<Auction> findByPrice(@Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice,
+                        Pageable pageable);
 
         @Query("SELECT a FROM Auction a " +
                         "LEFT JOIN UserAuctionInteraction uai ON uai.auction = a AND uai.user.userid = :userid " +
@@ -53,10 +63,11 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
                         @Param("activeOnly") boolean activeOnly,
                         Pageable pageable);
 
-        List<Auction> findByEndTimeBeforeAndActiveIsTrue(Instant currentTime);
+        @Query("SELECT a FROM Auction a WHERE a.endTime >= :currentTime AND a.active = true")
+        List<Auction> findFinishedAuctions(@Param("currentTime") Instant currentTime);
 
         @Query("SELECT a FROM Auction a WHERE a.startTime <= :currentTime AND a.active = false")
-        List<Auction> findStartingAuctions(Instant currentTime);
+        List<Auction> findStartingAuctions(@Param("currentTime") Instant currentTime);
 
         void deleteById(Long id);
 

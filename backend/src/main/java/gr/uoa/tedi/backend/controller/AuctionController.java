@@ -75,6 +75,16 @@ public class AuctionController {
         return auctionService.getAllCountries();
     }
 
+    @GetMapping("/minPrice")
+    public Double getMinPrice() {
+        return auctionService.getMinPrice();
+    }
+
+    @GetMapping("/maxPrice")
+    public Double getMaxPrice() {
+        return auctionService.getMaxPrice();
+    }
+
     @GetMapping("/location/{location}")
     public Page<Auction> getAuctionsByLocation(
             @PathVariable String location,
@@ -97,6 +107,15 @@ public class AuctionController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         return auctionService.getAuctionsByCountry(country, page, size);
+    }
+
+    @GetMapping("/price")
+    public Page<Auction> getAuctionsByPrice(
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return auctionService.getAuctionsByPrice(minPrice, maxPrice, page, size);
     }
 
     @GetMapping("/ordered/{userid}")

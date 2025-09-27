@@ -16,12 +16,12 @@ public class SchedulerConfig {
         this.auctionService = auctionService;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 10000)
     public void autoCloseAuctions() {
         auctionService.closeExpiredAuctions();
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 10000)
     public void autoActivateAuctions() {
         auctionService.activateAuctions();
     }
