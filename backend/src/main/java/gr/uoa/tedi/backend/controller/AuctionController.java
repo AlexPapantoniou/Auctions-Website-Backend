@@ -30,20 +30,13 @@ public class AuctionController {
         this.auctionService = auctionService;
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search/{userid}")
     public Page<Auction> searchAuctions(
+            @PathVariable Long userid,
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
-        return auctionService.searchAuctions(keyword, page, size);
-    }
-
-    @GetMapping("/category")
-    public Page<Auction> searchAuctionsByCategory(
-            @RequestParam String category,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        return auctionService.searchAuctionsByCategory(category, page, size);
+        return auctionService.searchAuctions(userid, keyword, page, size);
     }
 
     @GetMapping("/seller/{sellerid}/auctions")
@@ -85,46 +78,20 @@ public class AuctionController {
         return auctionService.getMaxPrice();
     }
 
-    @GetMapping("/location/{location}")
-    public Page<Auction> getAuctionsByLocation(
-            @PathVariable String location,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        return auctionService.getAuctionsByLocation(location, page, size);
-    }
-
-    @GetMapping("/city/{city}")
-    public Page<Auction> getAuctionsByCity(
-            @PathVariable String city,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        return auctionService.getAuctionsByCity(city, page, size);
-    }
-
-    @GetMapping("/country/{country}")
-    public Page<Auction> getAuctionsByCountry(
-            @PathVariable String country,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        return auctionService.getAuctionsByCountry(country, page, size);
-    }
-
-    @GetMapping("/price")
-    public Page<Auction> getAuctionsByPrice(
-            @RequestParam Double minPrice,
-            @RequestParam Double maxPrice,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        return auctionService.getAuctionsByPrice(minPrice, maxPrice, page, size);
-    }
-
-    @GetMapping("/ordered/{userid}")
-    public Page<Auction> getAuctionsOrderedByWeightAndActive(
+    @GetMapping("/filtered/{userid}/{category}/{location}/{city}/{country}/{minPrice}/{maxPrice}")
+    public Page<Auction> getAuctionsFilteredOrderedByWeight(
             @PathVariable Long userid,
+            @PathVariable String category,
+            @PathVariable String location,
+            @PathVariable String city,
+            @PathVariable String country,
+            @PathVariable Double minPrice,
+            @PathVariable Double maxPrice,
             @RequestParam(defaultValue = "false") boolean activeOnly,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
-        return auctionService.getAuctionsOrderedByWeightAndActive(userid, activeOnly, page, size);
+        return auctionService.getAuctionsFilteredOrderedByWeight(userid, category, location, city, country, minPrice,
+                maxPrice, activeOnly, page, size);
     }
 
     @PostMapping("/addauction")

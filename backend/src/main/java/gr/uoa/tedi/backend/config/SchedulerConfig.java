@@ -16,13 +16,15 @@ public class SchedulerConfig {
         this.auctionService = auctionService;
     }
 
+    // Every 10 seconds scan and activate/deactivate auctions that started/ended
+    @Scheduled(fixedRate = 10000)
+    public void autoActivateAuctions() {
+        auctionService.activateAuctions();
+    }
+
     @Scheduled(fixedRate = 10000)
     public void autoCloseAuctions() {
         auctionService.closeExpiredAuctions();
     }
 
-    @Scheduled(fixedRate = 10000)
-    public void autoActivateAuctions() {
-        auctionService.activateAuctions();
-    }
 }

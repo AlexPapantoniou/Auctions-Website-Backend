@@ -35,12 +35,8 @@ public class AuctionService {
         this.userRepository = userRepository;
     }
 
-    public Page<Auction> searchAuctions(String keyword, int page, int size) {
-        return auctionRepository.searchByKeyword(keyword, PageRequest.of(page, size));
-    }
-
-    public Page<Auction> searchAuctionsByCategory(String category, int page, int size) {
-        return auctionRepository.findByCategory(category, PageRequest.of(page, size));
+    public Page<Auction> searchAuctions(Long userid, String keyword, int page, int size) {
+        return auctionRepository.searchByKeyword(userid, keyword, PageRequest.of(page, size));
     }
 
     public Page<Auction> getAuctionsBySeller(Long sellerid, int page, int size) {
@@ -71,24 +67,11 @@ public class AuctionService {
         return auctionRepository.findMaxPrice();
     }
 
-    public Page<Auction> getAuctionsByLocation(String location, int page, int size) {
-        return auctionRepository.findByLocation(location, PageRequest.of(page, size));
-    }
+    public Page<Auction> getAuctionsFilteredOrderedByWeight(Long userid, String category, String location,
+            String city, String country, Double minPrice, Double maxPrice, boolean activeOnly, int page, int size) {
 
-    public Page<Auction> getAuctionsByCity(String city, int page, int size) {
-        return auctionRepository.findByCity(city, PageRequest.of(page, size));
-    }
-
-    public Page<Auction> getAuctionsByCountry(String country, int page, int size) {
-        return auctionRepository.findByCountry(country, PageRequest.of(page, size));
-    }
-
-    public Page<Auction> getAuctionsByPrice(Double minPrice, Double maxPrice, int page, int size) {
-        return auctionRepository.findByPrice(minPrice, maxPrice, PageRequest.of(page, size));
-    }
-
-    public Page<Auction> getAuctionsOrderedByWeightAndActive(Long userid, boolean activeOnly, int page, int size) {
-        return auctionRepository.findAllOrderByWeightAndActive(userid, activeOnly, PageRequest.of(page, size));
+        return auctionRepository.findFilteredOrderedByWeight(userid, category, location, city, country, minPrice,
+                maxPrice, activeOnly, PageRequest.of(page, size));
     }
 
     public Auction registerAuction(Auction auction) {
@@ -156,7 +139,6 @@ public class AuctionService {
         }
     }
 
-    @Transactional
     public Auction buyNow(Long auctionId, Long bidderId) {
         Auction auction = auctionRepository.findById(auctionId)
                 .orElseThrow(() -> new RuntimeException("Auction not found"));

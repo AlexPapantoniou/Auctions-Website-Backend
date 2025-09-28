@@ -15,13 +15,12 @@ import gr.uoa.tedi.backend.model.Auction;
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
-        @Query("SELECT a FROM Auction a WHERE " +
-                        "LOWER(a.item.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+        @Query("SELECT a FROM Auction a " +
+                        "LEFT JOIN UserAuctionInteraction uai ON uai.auction = a AND uai.user.userid = :userid " +
+                        "WHERE LOWER(a.item.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
                         "LOWER(a.item.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-        Page<Auction> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
-
-        @Query("SELECT a FROM Auction a JOIN a.item.categories c WHERE c.name = :category")
-        Page<Auction> findByCategory(@Param("category") String category, Pageable pageable);
+        Page<Auction> searchByKeyword(@Param("userid") Long userid, @Param("keyword") String keyword,
+                        Pageable pageable);
 
         @Query("SELECT a FROM Auction a WHERE a.seller.userid = :sellerid")
         Page<Auction> findBySellerId(@Param("sellerid") Long sellerid, Pageable pageable);
@@ -41,33 +40,33 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
         @Query("SELECT MAX(a.currentBid) FROM Auction a WHERE a.active = true")
         Double findMaxPrice();
 
-        @Query("SELECT a FROM Auction a WHERE a.location = :location")
-        Page<Auction> findByLocation(@Param("location") String location, Pageable pageable);
-
-        @Query("SELECT a FROM Auction a WHERE a.city = :city")
-        Page<Auction> findByCity(@Param("city") String city, Pageable pageable);
-
-        @Query("SELECT a FROM Auction a WHERE a.country = :country")
-        Page<Auction> findByCountry(@Param("country") String country, Pageable pageable);
-
-        @Query("SELECT a FROM Auction a WHERE a.currentBid >= :minPrice AND a.currentBid <= :maxPrice")
-        Page<Auction> findByPrice(@Param("minPrice") Double minPrice, @Param("maxPrice") Double maxPrice,
-                        Pageable pageable);
-
-        @Query("SELECT a FROM Auction a " +
+        @Query("SELECT DISTINCT a FROM Auction a " +
                         "LEFT JOIN UserAuctionInteraction uai ON uai.auction = a AND uai.user.userid = :userid " +
-                        "WHERE (:activeOnly = false OR a.active = true) " +
-                        "ORDER BY COALESCE(uai.weight, 0) DESC, a.startTime DESC")
-        Page<Auction> findAllOrderByWeightAndActive(
+                        "LEFT JOIN a.item.categories c " +
+                        "WHERE (:category = 'all' OR c.name = :category) " +
+                        "AND (a.location = :location OR :location = 'all') " +
+                        "AND (a.city = :city OR :city = 'all') " +
+                        "AND (a.country = :country OR :country = 'all') " +
+                        "AND (a.currentBid >= :minPrice AND a.currentBid <= :maxPrice) " +
+                        "AND (a.active = true OR :activeOnly = false) " +
+                        "GROUP BY a " +
+                        "ORDER BY COALESCE(MAX(uai.weight), 0) DESC, a.startTime DESC")
+        Page<Auction> findFilteredOrderedByWeight(
                         @Param("userid") Long userid,
+                        @Param("category") String category,
+                        @Param("location") String location,
+                        @Param("city") String city,
+                        @Param("country") String country,
+                        @Param("minPrice") Double minPrice,
+                        @Param("maxPrice") Double maxPrice,
                         @Param("activeOnly") boolean activeOnly,
                         Pageable pageable);
 
-        @Query("SELECT a FROM Auction a WHERE a.endTime >= :currentTime AND a.active = true")
-        List<Auction> findFinishedAuctions(@Param("currentTime") Instant currentTime);
-
         @Query("SELECT a FROM Auction a WHERE a.startTime <= :currentTime AND a.active = false")
         List<Auction> findStartingAuctions(@Param("currentTime") Instant currentTime);
+
+        @Query("SELECT a FROM Auction a WHERE a.endTime <= :currentTime AND a.active = true")
+        List<Auction> findFinishedAuctions(@Param("currentTime") Instant currentTime);
 
         void deleteById(Long id);
 
