@@ -34,12 +34,13 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
         @Query("SELECT DISTINCT a.country FROM Auction a")
         List<String> findAllCountries();
 
-        @Query("SELECT MIN(a.currentBid) FROM Auction a WHERE a.active = true")
+        @Query("SELECT MIN(a.currentBid) FROM Auction a")
         Double findMinPrice();
 
-        @Query("SELECT MAX(a.currentBid) FROM Auction a WHERE a.active = true")
+        @Query("SELECT MAX(a.currentBid) FROM Auction a")
         Double findMaxPrice();
 
+        // Find the auctions considering all filters and sort them by weight
         @Query("SELECT DISTINCT a FROM Auction a " +
                         "LEFT JOIN UserAuctionInteraction uai ON uai.auction = a AND uai.user.userid = :userid " +
                         "LEFT JOIN a.item.categories c " +
@@ -62,7 +63,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
                         @Param("activeOnly") boolean activeOnly,
                         Pageable pageable);
 
-        @Query("SELECT a FROM Auction a WHERE a.startTime <= :currentTime AND a.active = false")
+        @Query("SELECT a FROM Auction a WHERE a.startTime <= :currentTime AND a.endTime >= :currentTime AND a.active = false")
         List<Auction> findStartingAuctions(@Param("currentTime") Instant currentTime);
 
         @Query("SELECT a FROM Auction a WHERE a.endTime <= :currentTime AND a.active = true")

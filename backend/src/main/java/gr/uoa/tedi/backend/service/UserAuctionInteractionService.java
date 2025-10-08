@@ -6,8 +6,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import gr.uoa.tedi.backend.model.Auction;
-import gr.uoa.tedi.backend.model.User;
 import gr.uoa.tedi.backend.model.UserAuctionInteraction;
 import gr.uoa.tedi.backend.repository.UserAuctionInteractionRepository;
 
@@ -21,19 +19,22 @@ public class UserAuctionInteractionService {
     }
 
     @Transactional
-    public UserAuctionInteraction logInteraction(User user, Auction auction, String type, Double weight) {
+    public UserAuctionInteraction logInteraction(UserAuctionInteraction uai) {
         Optional<UserAuctionInteraction> optOld = userAuctionInteractionRepository
-                .findByUserUseridAndAuctionAuctionid(user.getUserid(), auction.getAuctionid());
+                .findByUserUseridAndAuctionAuctionid(uai.getUser().getUserid(), uai.getAuction().getAuctionid());
+
         if (optOld.isPresent()) {
             UserAuctionInteraction old = optOld.get();
-            old.setWeight(old.getWeight() + weight);
+            old.setWeight(old.getWeight() + uai.getWeight());
+            old.setInteractionType(uai.getInteractionType());
+
             return userAuctionInteractionRepository.save(old);
         } else {
             UserAuctionInteraction interaction = new UserAuctionInteraction();
-            interaction.setUser(user);
-            interaction.setAuction(auction);
-            interaction.setInteractionType(type);
-            interaction.setWeight(weight);
+            interaction.setUser(uai.getUser());
+            interaction.setAuction(uai.getAuction());
+            interaction.setInteractionType(uai.getInteractionType());
+            interaction.setWeight(uai.getWeight());
 
             return userAuctionInteractionRepository.save(interaction);
         }
